@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -58,6 +59,19 @@ public class User {
 	
 	private List<Role> roles;
 	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	
+	private List<Ring> rings;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name="teams_users",
+			joinColumns = @JoinColumn(name ="user_id"),
+			inverseJoinColumns = @JoinColumn(name = "team_id"))
+	
+	private List<Team> teams;
+
+
 	public User() {
 		
 	}
@@ -143,5 +157,21 @@ public class User {
     protected void onUpdate(){
         this.updated_at = new Date();
     }
+
+	public List<Ring> getRings() {
+		return rings;
+	}
+
+	public void setRings(List<Ring> rings) {
+		this.rings = rings;
+	}
+	
+	public List<Team> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(List<Team> teams) {
+		this.teams = teams;
+	}
 
 }
